@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import WriteupCard from '../components/WriteupCard';
 import Footer from '../components/Footer';
+import { toast } from "sonner";
+
+// Tech keywords for image search
+const techKeywords = ['cybersecurity', 'hacking', 'coding', 'technology', 'programming', 'computer', 'network', 'data', 'security'];
+
+// Function to get a random image
+const getRandomImage = (index: number) => {
+  const keyword = techKeywords[index % techKeywords.length];
+  return `https://source.unsplash.com/featured/800x600?${keyword}&sig=${Math.random()}`;
+};
 
 // Mock data
 const recentWriteups = [
@@ -19,7 +30,7 @@ const recentWriteups = [
       username: 'CyberNinja',
       avatar: 'public/lovable-uploads/89d13a5f-f0e7-4d9f-8a00-e5daed4d8eb2.png'
     },
-    imageUrl: 'public/lovable-uploads/0e494b80-b79e-4a45-93d9-217ab70ef20b.png'
+    imageUrl: ''
   },
   {
     id: '5',
@@ -34,7 +45,7 @@ const recentWriteups = [
       username: 'PacketQueen',
       avatar: 'public/lovable-uploads/89d13a5f-f0e7-4d9f-8a00-e5daed4d8eb2.png'
     },
-    imageUrl: 'public/lovable-uploads/bc95795e-7331-4f7d-8ecc-61f60ad4966e.png'
+    imageUrl: ''
   },
   {
     id: '6',
@@ -49,7 +60,7 @@ const recentWriteups = [
       username: 'ByteDetective',
       avatar: 'public/lovable-uploads/89d13a5f-f0e7-4d9f-8a00-e5daed4d8eb2.png'
     },
-    imageUrl: 'public/lovable-uploads/0e494b80-b79e-4a45-93d9-217ab70ef20b.png'
+    imageUrl: ''
   },
   {
     id: '7',
@@ -64,7 +75,7 @@ const recentWriteups = [
       username: 'SQLMaster',
       avatar: 'public/lovable-uploads/89d13a5f-f0e7-4d9f-8a00-e5daed4d8eb2.png'
     },
-    imageUrl: 'public/lovable-uploads/5203a0e5-a410-40e7-a48a-b73badcaab5d.png'
+    imageUrl: ''
   },
   {
     id: '8',
@@ -79,7 +90,7 @@ const recentWriteups = [
       username: 'CryptoHacker',
       avatar: 'public/lovable-uploads/89d13a5f-f0e7-4d9f-8a00-e5daed4d8eb2.png'
     },
-    imageUrl: 'public/lovable-uploads/aeffce6a-57ea-467b-b042-4f6081e10ccb.png'
+    imageUrl: ''
   },
   {
     id: '9',
@@ -94,12 +105,28 @@ const recentWriteups = [
       username: 'RootMaster',
       avatar: 'public/lovable-uploads/89d13a5f-f0e7-4d9f-8a00-e5daed4d8eb2.png'
     },
-    imageUrl: 'public/lovable-uploads/adc67a65-c2e5-4393-abbd-9145ba691647.png'
+    imageUrl: ''
   },
 ];
 
 const WriteupsList: React.FC = () => {
   const [sortBy, setSortBy] = useState('Most Recent');
+  const [writeups, setWriteups] = useState(recentWriteups);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Assign random images to each writeup
+    const updatedWriteups = recentWriteups.map((writeup, index) => ({
+      ...writeup,
+      imageUrl: getRandomImage(index)
+    }));
+    
+    // Simulate API loading
+    setTimeout(() => {
+      setWriteups(updatedWriteups);
+      setIsLoading(false);
+    }, 500);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0A1117]">
@@ -126,12 +153,36 @@ const WriteupsList: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {recentWriteups.map(writeup => (
-              <WriteupCard
-                key={writeup.id}
-                {...writeup}
-              />
-            ))}
+            {isLoading ? (
+              // Show skeleton loaders while images are loading
+              Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="bg-[#1B2023] rounded-lg border border-[#1B2023] overflow-hidden">
+                  <div className="w-full h-40 bg-[#1B2023] animate-pulse"></div>
+                  <div className="p-4">
+                    <div className="flex gap-2 mb-2">
+                      <div className="bg-[#2A3137] h-6 w-16 rounded animate-pulse"></div>
+                      <div className="bg-[#2A3137] h-6 w-20 rounded animate-pulse"></div>
+                    </div>
+                    <div className="h-6 bg-[#2A3137] rounded mb-2 animate-pulse"></div>
+                    <div className="h-4 bg-[#2A3137] rounded mb-4 animate-pulse"></div>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-full bg-[#2A3137] animate-pulse"></div>
+                        <div className="h-4 w-20 bg-[#2A3137] rounded animate-pulse"></div>
+                      </div>
+                      <div className="h-4 w-16 bg-[#2A3137] rounded animate-pulse"></div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              writeups.map((writeup) => (
+                <WriteupCard
+                  key={writeup.id}
+                  {...writeup}
+                />
+              ))
+            )}
           </div>
           
           <div className="flex justify-center mt-8">

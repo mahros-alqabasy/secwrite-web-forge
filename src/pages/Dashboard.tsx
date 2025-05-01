@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import WriteupCard from '../components/WriteupCard';
 import Footer from '../components/Footer';
+import { toast } from "sonner";
+
+// Tech keywords for image search
+const techKeywords = ['cybersecurity', 'hacking', 'coding', 'technology', 'programming', 'computer', 'network', 'data', 'security'];
+
+// Function to get a random image
+const getRandomImage = (index: number) => {
+  const keyword = techKeywords[index % techKeywords.length];
+  return `https://source.unsplash.com/featured/800x600?${keyword}&sig=${Math.random()}`;
+};
 
 // Mock data
 const writeups = [
@@ -67,7 +77,7 @@ const recentWriteups = [
       username: 'CyberNinja',
       avatar: 'public/lovable-uploads/89d13a5f-f0e7-4d9f-8a00-e5daed4d8eb2.png'
     },
-    imageUrl: 'public/lovable-uploads/0e494b80-b79e-4a45-93d9-217ab70ef20b.png'
+    imageUrl: ''
   },
   {
     id: '5',
@@ -82,7 +92,7 @@ const recentWriteups = [
       username: 'PacketQueen',
       avatar: 'public/lovable-uploads/89d13a5f-f0e7-4d9f-8a00-e5daed4d8eb2.png'
     },
-    imageUrl: 'public/lovable-uploads/bc95795e-7331-4f7d-8ecc-61f60ad4966e.png'
+    imageUrl: ''
   },
   {
     id: '6',
@@ -97,7 +107,7 @@ const recentWriteups = [
       username: 'ByteDetective',
       avatar: 'public/lovable-uploads/89d13a5f-f0e7-4d9f-8a00-e5daed4d8eb2.png'
     },
-    imageUrl: 'public/lovable-uploads/0e494b80-b79e-4a45-93d9-217ab70ef20b.png'
+    imageUrl: ''
   },
   {
     id: '7',
@@ -147,6 +157,31 @@ const recentWriteups = [
 ];
 
 const Dashboard: React.FC = () => {
+  const [updatedWriteups, setUpdatedWriteups] = useState(writeups);
+  const [updatedRecentWriteups, setUpdatedRecentWriteups] = useState(recentWriteups);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Add random images to regular writeups
+    const writeupWithImages = writeups.map((writeup, index) => ({
+      ...writeup,
+      imageUrl: getRandomImage(index)
+    }));
+    
+    // Add random images to recent writeups
+    const recentWithImages = recentWriteups.map((writeup, index) => ({
+      ...writeup,
+      imageUrl: getRandomImage(index + writeups.length) // Offset to ensure different images
+    }));
+    
+    // Simulate API loading
+    setTimeout(() => {
+      setUpdatedWriteups(writeupWithImages);
+      setUpdatedRecentWriteups(recentWithImages);
+      setIsLoading(false);
+    }, 500);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-[#0A1117]">
       <Header />
@@ -158,12 +193,36 @@ const Dashboard: React.FC = () => {
           <div className="mb-8">
             <h2 className="text-2xl font-semibold mb-6">Latest Writeups</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {writeups.map(writeup => (
-                <WriteupCard
-                  key={writeup.id}
-                  {...writeup}
-                />
-              ))}
+              {isLoading ? (
+                // Show skeleton loaders while images are loading
+                Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="bg-[#1B2023] rounded-lg border border-[#1B2023] overflow-hidden">
+                    <div className="w-full h-40 bg-[#1B2023] animate-pulse"></div>
+                    <div className="p-4">
+                      <div className="flex gap-2 mb-2">
+                        <div className="bg-[#2A3137] h-6 w-16 rounded animate-pulse"></div>
+                        <div className="bg-[#2A3137] h-6 w-20 rounded animate-pulse"></div>
+                      </div>
+                      <div className="h-6 bg-[#2A3137] rounded mb-2 animate-pulse"></div>
+                      <div className="h-4 bg-[#2A3137] rounded mb-4 animate-pulse"></div>
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-[#2A3137] animate-pulse"></div>
+                          <div className="h-4 w-20 bg-[#2A3137] rounded animate-pulse"></div>
+                        </div>
+                        <div className="h-4 w-16 bg-[#2A3137] rounded animate-pulse"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                updatedWriteups.map(writeup => (
+                  <WriteupCard
+                    key={writeup.id}
+                    {...writeup}
+                  />
+                ))
+              )}
             </div>
             
             <div className="mt-8 text-center">

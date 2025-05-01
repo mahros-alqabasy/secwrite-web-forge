@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
@@ -11,7 +10,7 @@ const recentWriteups = [
     id: '4',
     title: 'Breaking RCE in NodeJS Application',
     description: 'A detailed walkthrough of exploiting a Node.js deserialization vulnerability to achieve RCE.',
-    difficulty: 'Medium',
+    difficulty: 'Medium' as const,
     platform: 'HTB',
     tags: ['NodeJS', 'Web', 'RCE'],
     date: 'Apr 15, 2025',
@@ -26,7 +25,7 @@ const recentWriteups = [
     id: '5',
     title: 'Network Traffic Analysis Basics',
     description: 'Learn how to use Wireshark to analyze suspicious network traffic and identify potential threats.',
-    difficulty: 'Easy',
+    difficulty: 'Easy' as const,
     platform: 'THM',
     tags: ['Wireshark', 'Forensics', 'TCP/IP'],
     date: 'Apr 10, 2025',
@@ -41,7 +40,7 @@ const recentWriteups = [
     id: '6',
     title: 'Reversing Advanced Anti-Debug Techniques',
     description: 'An in-depth analysis of modern anti-debugging techniques found in malware and how to bypass them.',
-    difficulty: 'Hard',
+    difficulty: 'Hard' as const,
     platform: 'HTB',
     tags: ['Reversing', 'Assembly', 'Anti-Debug'],
     date: 'Apr 8, 2025',
@@ -56,7 +55,7 @@ const recentWriteups = [
     id: '7',
     title: 'Advanced SQL Injection Techniques',
     description: 'Exploring time-based blind SQL injection vulnerabilities and how to exploit them to exfiltrate data.',
-    difficulty: 'Medium',
+    difficulty: 'Medium' as const,
     platform: 'THM',
     tags: ['SQL', 'Web', 'Injection'],
     date: 'Apr 5, 2025',
@@ -71,7 +70,7 @@ const recentWriteups = [
     id: '8',
     title: 'Breaking RSA Implementation Flaws',
     description: 'A step-by-step guide to exploiting common implementation flaws in RSA encryption algorithms.',
-    difficulty: 'Medium',
+    difficulty: 'Medium' as const,
     platform: 'THM',
     tags: ['Crypto', 'RSA', 'Math'],
     date: 'Apr 2, 2025',
@@ -86,7 +85,7 @@ const recentWriteups = [
     id: '9',
     title: 'Linux Privilege Escalation Cheatsheet',
     description: 'A comprehensive guide to common Linux privilege escalation techniques with examples and explanations.',
-    difficulty: 'Easy',
+    difficulty: 'Easy' as const,
     platform: 'VulnHub',
     tags: ['Linux', 'PrivEsc', 'SUID'],
     date: 'Mar 28, 2025',

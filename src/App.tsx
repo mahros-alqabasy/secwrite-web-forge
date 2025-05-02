@@ -14,6 +14,7 @@ import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import AuthPages from "./pages/AuthPages";
+import NinjaSkillsWriteup from "./pages/WriteupDetail/NinjaSkills";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/writeups" element={<WriteupsList />} />
           <Route path="/writeup/:id" element={<WriteupDetail />} />
+          <Route path="/writeup/ninja-skills" element={<NinjaSkillsWriteup />} />
           <Route path="/writeup/new" element={<WriteupEditor />} />
           <Route path="/writeup/edit/:id" element={<WriteupEditor />} />
           <Route path="/profile" element={<ProfilePage />} />
